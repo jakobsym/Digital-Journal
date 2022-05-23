@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 from .models import Topic
+from .forms import TopicForm  #'TopicForm' is a class from 'forms.py'
+
 
 
 def index(request):
@@ -19,3 +22,17 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
     
+def new_topic(request):
+    """ Add new topic for user """
+    if request.method != 'POST':
+        # meaning no data submitted; send blank page
+        form  = TopicForm()
+    else:
+        # POST data submitted; process this data
+        form = TopicForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:topics') # redirect will redirect user back to Topics page after submitting topic
+    # display blank/invalid form
+    context = {'form': form}
+    return render(request, 'learning_logs/new_topic.html', context)
