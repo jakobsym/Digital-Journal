@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 # Class allowing user to create topic 
 class Topic(models.Model):
     """ A topic the user is learning about """
     text = models.CharField(max_length=200) #allocating 200 spaces in database
     date_added = models.DateTimeField(auto_now_add=True) #automatically sets date to topic upon creation
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         """ Returning a string """
