@@ -1,5 +1,7 @@
 from pickletools import OpcodeInfo
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm  #'TopicForm' is a class from 'forms.py'
@@ -9,7 +11,7 @@ from .forms import TopicForm, EntryForm  #'TopicForm' is a class from 'forms.py'
 def index(request):
     """ The homepage for learning_logs """
     return render(request, 'learning_logs/index.html')
-
+@login_required
 def topics(request):
     """ Show all topics """
     topics = Topic.objects.order_by('date_added')
