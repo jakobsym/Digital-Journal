@@ -11,10 +11,11 @@ from .forms import TopicForm, EntryForm  #'TopicForm' is a class from 'forms.py'
 def index(request):
     """ The homepage for learning_logs """
     return render(request, 'learning_logs/index.html')
+
 @login_required
 def topics(request):
     """ Show all topics """
-    topics = Topic.objects.order_by('date_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
