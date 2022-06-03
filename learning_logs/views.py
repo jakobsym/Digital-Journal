@@ -18,13 +18,15 @@ def topics(request):
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
     """ Show single topic and all entries """
     topic = Topic.objects.get(id=topic_id) #queries, as this querys database. applies to line of code below too
     entries = topic.entry_set.order_by('-date_added') #sorts in reverse order
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
-    
+
+@login_required    
 def new_topic(request):
     """ Add new topic for user """
     if request.method != 'POST':
@@ -40,6 +42,7 @@ def new_topic(request):
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
 
+@login_required
 def new_entry(request, topic_id):
     """ allow for new entry of a topic """
     topic = Topic.objects.get(id=topic_id)
@@ -58,6 +61,7 @@ def new_entry(request, topic_id):
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
 
+@login_required
 def edit_entry(request, entry_id):
     """ Edit exisiting entry """
     entry = Entry.objects.get(id=entry_id)
